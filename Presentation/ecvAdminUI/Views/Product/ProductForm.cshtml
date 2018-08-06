@@ -1,0 +1,1214 @@
+﻿@model ecvAdminUI.ViewModels.Catalog.ProductViewModel
+
+@using ecvLib.Core
+@using ecvLib.Core.HtmlHelpers
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ bool isReadonly = false;}
+@{ string submitAction = "";}
+
+@{string _Title = ""; }
+@if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.New)
+{
+    isReadonly = false;
+    _Title = "Create New Product";
+    submitAction = "SaveNew";
+}
+else if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Edit)
+{
+    isReadonly = false;
+    _Title = "Edit Product Details";
+    submitAction = "SaveEdit";
+}
+else if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Detail)
+{
+    isReadonly = true;
+    _Title = "Display Product Details";
+    submitAction = "Details";
+}
+else if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Delete)
+{
+    isReadonly = true;
+    _Title = "Delete Product Details";
+    submitAction = "DeleteConfirmed";
+}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+    @using (Html.BeginForm(submitAction, "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            <fieldset>
+
+                <h4> @_Title : @Model.productModel.Name </h4>
+                <div>
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:50%">
+                                    <div>
+                                        @Html.ActionLink("Back to List", "List")
+                                    </div>
+                                </td>
+                                @if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.New || Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Edit)
+                                {
+                                    <td style="width:50%; float:right">
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="Save" class="btn btn-default" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                }
+                                else if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Detail || Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Delete)
+                                {
+                                    <td style="width:50%; float:none">
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+
+                                                @if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Detail)
+                                                {
+                                                    @Html.ActionLink("Edit", "Edit", new { productId = @Model.productModel.Id })
+                                                    <span>   </span>
+                                                    @Html.ActionLink("Delete", "Delete", new { productId = @Model.productModel.Id })
+                                                }
+                                                else if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Delete)
+                                                {
+                                                    <p class="label label-danger">Do you want to delete this record?</p>
+                                                    <input type="submit" value="Yes" class="btn btn-link" />
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                }
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                </div>
+                <hr />
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.productModel.Id)
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tabProductInfo" data-toggle="tab">Product Info</a></li>
+                    <li><a href="#tabSEO" data-toggle="tab">SEO</a></li>
+                    <li><a href="#tabPictures" data-toggle="tab">Pictures</a></li>
+                    <li><a href="#tabProductattributes" data-toggle="tab">Product attributes</a></li>
+                    <li><a href="#tabSpecificationattributes" data-toggle="tab">Specification attributes</a></li>
+                    <li><a href="#tabOthers" data-toggle="tab">Others</a></li>
+                </ul>
+
+                <div id="myTabContent" class="tab-content">
+
+                    <div class="tab-pane fade active in" id="tabProductInfo">
+                        <br />
+                        <div class="col-md-7">
+
+                            <div class="panel-group">
+                                <div class="panel panel-default">
+
+                                    <div class="panel-heading">General Information</div>
+
+                                    <div class="panel-body">
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.StoreID, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.StoreID, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.StoreID, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.ProductTypeId, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @*@Html.EditorFor(model => model.productModel.ProductTypeId, new { htmlAttributes = new { @class = "form-control" } })*@
+                                                @Html.DropDownListFor(model => model.productModel.ProductTypeId, new SelectList(Model.productTypeModel, "Id", "Description", ""), new { @class = "form-control" }).disableControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.ProductTypeId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        @* Check if ParentGroupedProduct should be display or not. *@
+                                        @{
+
+                                            if (Model.productModel.ParentGroupedProductId > 0)
+                                            {
+
+                                                @*<div class="form-group" style="display:@ParentGroupedProductDisplay">
+                                                @Html.LabelFor(model => model.productModel.ParentGroupedProductId, htmlAttributes: new { @class = "control-label col-md-3" })
+                                                <div class="col-md-9">
+                                                    @Html.EditorFor(model => model.productModel.ParentGroupedProductId, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.productModel.ParentGroupedProductId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>*@
+
+                                                <div class="form-group">
+                                                    @Html.LabelFor(model => model.productModel.AssociatedToProductName, htmlAttributes: new { @class = "control-label col-md-3" })
+                                                    <div class="col-md-9">
+                                                        @*@Html.EditorFor(model => model.productModel.AssociatedToProductName, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.productModel.AssociatedToProductName, "", new { @class = "text-danger" })*@
+
+                                                        @Html.ActionLink(Model.productModel.AssociatedToProductName, "Edit", new { productId = Model.productModel.ParentGroupedProductId })
+                                                    </div>
+                                                </div>
+
+                                            }//End of -- if (Model.productModel.ParentGroupedProductId > 0)
+                                        }
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.VisibleIndividually, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.VisibleIndividually).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.VisibleIndividually, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.Name, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.Name, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.Name, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.ShortDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.ShortDescription, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.ShortDescription, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.FullDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.FullDescription, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.productModel.FullDescription, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.ProductTemplateId, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.ProductTemplateId, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.productModel.ProductTemplateId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.Sku, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.Sku, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.Sku, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.Published, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.Published).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.Published, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.ManufacturerPartNumber, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.ManufacturerPartNumber, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.ManufacturerPartNumber, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.Gtin, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.Gtin, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.Gtin, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.ShowOnHomePage, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.ShowOnHomePage).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.ShowOnHomePage, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="divDisplayOrder" style="display:none">
+                                            @Html.LabelFor(model => model.productModel.DisplayOrder, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.DisplayOrder, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.AllowCustomerReviews, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.AllowCustomerReviews).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.AllowCustomerReviews, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.AvailableStartDateTimeUtc, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9 input-group date" id="dateTimePicketAvailableStartDateTimeUtc">
+                                                @Html.EditorFor(model => model.productModel.AvailableStartDateTimeUtc, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.AvailableStartDateTimeUtc, "", new { @class = "text-danger" })
+                                                <span class="input-group-addon">
+                                                    <span class="glyphicon glyphicon-calendar"></span>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        @*<div class="input-group date" id="datetimepicker1">
+                                        <input type="text" class="form-control">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </span>
+                                    </div>*@
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.AvailableEndDateTimeUtc, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.AvailableEndDateTimeUtc, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.AvailableEndDateTimeUtc, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.AdminComment, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.AdminComment, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.AdminComment, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.MarkAsNew, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.MarkAsNew).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.MarkAsNew, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="divMarkAsNew" style="display:none">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.productModel.MarkAsNewStartDateTimeUtc, htmlAttributes: new { @class = "control-label col-md-3" })
+                                                <div class="col-md-9">
+                                                    @Html.EditorFor(model => model.productModel.MarkAsNewStartDateTimeUtc, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.MarkAsNewStartDateTimeUtc, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.productModel.MarkAsNewEndDateTimeUtc, htmlAttributes: new { @class = "control-label col-md-3" })
+                                                <div class="col-md-9">
+                                                    @Html.EditorFor(model => model.productModel.MarkAsNewEndDateTimeUtc, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.MarkAsNewEndDateTimeUtc, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.CreatedOnUtc, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.CreatedOnUtc, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                @Html.ValidationMessageFor(model => model.productModel.CreatedOnUtc, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.UpdatedOnUtc, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.UpdatedOnUtc, "{0:d-MM-yyyy}", new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                @Html.ValidationMessageFor(model => model.productModel.UpdatedOnUtc, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.Deleted, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.Deleted).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.Deleted, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div> @* End of DIV -- class="panel-body" *@
+
+                                </div> @* End of DIV -- class="panel panel-default" *@
+
+                            </div> @* End of DIV -- class="panel-group" *@
+
+                            <div class="panel panel-default advanced-setting" id="group-giftcard">
+
+                                <div class="panel-heading">Gift card</div>
+
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.productModel.IsGiftCard, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.productModel.IsGiftCard).disableControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.IsGiftCard, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" id="divGiftCard" style="display:none">
+                                        @Html.LabelFor(model => model.productModel.GiftCardTypeId, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.productModel.GiftCardTypeId, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                            @Html.ValidationMessageFor(model => model.productModel.GiftCardTypeId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div> @* End of DIV -- class="panel-body" *@
+
+                            </div>@* End of DIV -- class="panel panel-default advanced-setting" id ="group-giftcard" *@
+
+                            <div class="panel panel-default advanced-setting" id="group-rental">
+
+                                <div class="panel-heading">Rental</div>
+
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.productModel.IsRental, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.productModel.IsRental).disableControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.IsRental, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="divIsRental" style="display:none">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.RentalPriceLength, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.RentalPriceLength, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.RentalPriceLength, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.RentalPricePeriodId, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.RentalPricePeriodId, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.RentalPricePeriodId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> @* End of DIV -- class="panel-body" *@
+
+                            </div>@* End of DIV -- class="panel panel-default advanced-setting" id ="group-rental" *@
+
+                            <div class="panel panel-default" id="group-prices">
+
+                                <div class="panel-heading">Prices</div>
+
+                                <div class="panel-body">
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.productModel.Price, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.productModel.Price, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                            @Html.ValidationMessageFor(model => model.productModel.Price, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.productModel.OldPrice, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.productModel.OldPrice, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                            @Html.ValidationMessageFor(model => model.productModel.OldPrice, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.productModel.ProductCost, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.productModel.ProductCost, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                            @Html.ValidationMessageFor(model => model.productModel.ProductCost, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.productModel.DisableBuyButton, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.productModel.DisableBuyButton).disableControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.DisableBuyButton, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.productModel.DisableWishlistButton, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.productModel.DisableWishlistButton).disableControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.DisableWishlistButton, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.productModel.AvailableForPreOrder, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.productModel.AvailableForPreOrder).disableControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.AvailableForPreOrder, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" style="display:none" id="divPreOrderAvailabilityStartDateTimeUtc">
+                                        @Html.LabelFor(model => model.productModel.PreOrderAvailabilityStartDateTimeUtc, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.productModel.PreOrderAvailabilityStartDateTimeUtc, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                            @Html.ValidationMessageFor(model => model.productModel.PreOrderAvailabilityStartDateTimeUtc, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.productModel.CallForPrice, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.productModel.CallForPrice).disableControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.CallForPrice, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.productModel.CustomerEntersPrice, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.productModel.CustomerEntersPrice).disableControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.CustomerEntersPrice, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="divCustomerEnteredPrice" style="display:none">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.MinimumCustomerEnteredPrice, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.MinimumCustomerEnteredPrice, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.MinimumCustomerEnteredPrice, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.MaximumCustomerEnteredPrice, htmlAttributes: new { @class = "control-label col-md-3" })
+                                            <div class="col-md-9">
+                                                @Html.EditorFor(model => model.productModel.MaximumCustomerEnteredPrice, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.MaximumCustomerEnteredPrice, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.productModel.IsTaxExempt, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.productModel.IsTaxExempt).disableControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.IsTaxExempt, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" style="display:none" id="divTaxCategory">
+                                        @Html.LabelFor(model => model.productModel.TaxCategoryId, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            @Html.EditorFor(model => model.productModel.TaxCategoryId, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                            @Html.ValidationMessageFor(model => model.productModel.TaxCategoryId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                </div> @* End of DIV -- class="panel-body" *@
+
+                            </div>@* End of DIV -- class="panel panel-default" id ="group-prices" *@
+
+                            <div class="panel panel-default advanced-setting" id="tier-prices">
+
+                                <div class="panel-heading">Tier prices</div>
+
+                                <div class="panel-body">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.productModel.HasTierPrices, htmlAttributes: new { @class = "control-label col-md-3" })
+                                        <div class="col-md-9">
+                                            <div class="checkbox">
+                                                @Html.EditorFor(model => model.productModel.HasTierPrices).disableControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.HasTierPrices, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div> @* End of DIV -- class="panel-body" *@
+
+                            </div>@* End of DIV -- class="panel panel-default advanced-setting" id ="tier-price" *@
+
+
+                        </div> @*End of -- <div class="col-md-7">*@
+
+                        @* --------------Second Colum------------------*@
+                        <div class="col-md-5">
+
+                            <div class="panel-group">
+
+                                <div class="panel panel-default" id="group-associated-products">
+
+                                    <div class="panel-heading">Associated products (variants)</div>
+
+                                    <div class="panel-body">
+
+                                    </div> @* End of DIV -- class="panel-body" *@
+
+                                </div>@* End of DIV -- class="panel panel-default" id ="group-associated-products" *@
+
+
+                                <div class="panel panel-default" id="group-inventory">
+
+                                    <div class="panel-heading">Inventory</div>
+
+                                    <div class="panel-body">
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.ManageInventoryMethodId, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.ManageInventoryMethodId, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.ManageInventoryMethodId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.StockQuantity, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.StockQuantity, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.StockQuantity, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.WarehouseId, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.WarehouseId, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.WarehouseId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.UseMultipleWarehouses, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.UseMultipleWarehouses).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.UseMultipleWarehouses, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.DisplayStockAvailability, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.DisplayStockAvailability).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.DisplayStockAvailability, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="divDisplayStockQuantity" style="display:none">
+                                            @Html.LabelFor(model => model.productModel.DisplayStockQuantity, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.DisplayStockQuantity).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.DisplayStockQuantity, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.MinStockQuantity, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.MinStockQuantity, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.MinStockQuantity, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.LowStockActivityId, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.LowStockActivityId, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.LowStockActivityId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.ProductAvailabilityRangeId, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.ProductAvailabilityRangeId, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.ProductAvailabilityRangeId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.NotifyAdminForQuantityBelow, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.NotifyAdminForQuantityBelow, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.NotifyAdminForQuantityBelow, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.OrderMinimumQuantity, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.OrderMinimumQuantity, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.OrderMinimumQuantity, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.OrderMaximumQuantity, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.OrderMaximumQuantity, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.OrderMaximumQuantity, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.NotReturnable, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.NotReturnable).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.NotReturnable, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div> @* End of DIV -- class="panel-body" *@
+
+                                </div>@* End of DIV -- class="panel panel-default advanced-setting" id ="group-inventory" *@
+
+                                <div class="panel panel-default" id="group-shipping">
+
+                                    <div class="panel-heading">Shipping</div>
+
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.IsShipEnabled, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.IsShipEnabled).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.IsShipEnabled, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div id="divIsShipEnabled" style="display:none">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.productModel.IsFreeShipping, htmlAttributes: new { @class = "control-label col-md-4" })
+                                                <div class="col-md-8">
+                                                    <div class="checkbox">
+                                                        @Html.EditorFor(model => model.productModel.IsFreeShipping).disableControl(() => isReadonly == true)
+                                                        @Html.ValidationMessageFor(model => model.productModel.IsFreeShipping, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.productModel.ShipSeparately, htmlAttributes: new { @class = "control-label col-md-4" })
+                                                <div class="col-md-8">
+                                                    <div class="checkbox">
+                                                        @Html.EditorFor(model => model.productModel.ShipSeparately).disableControl(() => isReadonly == true)
+                                                        @Html.ValidationMessageFor(model => model.productModel.ShipSeparately, "", new { @class = "text-danger" })
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.productModel.AdditionalShippingCharge, htmlAttributes: new { @class = "control-label col-md-4" })
+                                                <div class="col-md-8">
+                                                    @Html.EditorFor(model => model.productModel.AdditionalShippingCharge, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.AdditionalShippingCharge, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => model.productModel.DeliveryDateId, htmlAttributes: new { @class = "control-label col-md-4" })
+                                                <div class="col-md-8">
+                                                    @Html.EditorFor(model => model.productModel.DeliveryDateId, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.DeliveryDateId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div> @* End of DIV -- class="panel-body" *@
+
+                                </div>@* End of DIV -- class="panel panel-default advanced-setting" id ="group-shipping" *@
+
+                                <div class="panel panel-default" id="group-dimension">
+
+                                    <div class="panel-heading">Dimension</div>
+
+                                    <div class="panel-body">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.Weight, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.Weight, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.Weight, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.Length, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.Length, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.Length, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.Width, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.Width, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.Width, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.Height, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.Height, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.Height, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div> @* End of DIV -- class="panel-body" *@
+
+                                </div>@* End of DIV -- class="panel panel-default advanced-setting" id ="group-dimension" *@
+
+                                <div class="panel panel-default" id="group-mappings">
+
+                                    <div class="panel-heading">Mappings</div>
+
+                                    <div class="panel-body">
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Categories</label>
+                                            <div class="col-md-8">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="control-label col-md-4">Manufacturers</label>
+                                            <div class="col-md-8">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.LimitedToStores, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.LimitedToStores).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.LimitedToStores, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.VendorId, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                @Html.EditorFor(model => model.productModel.VendorId, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                                @Html.ValidationMessageFor(model => model.productModel.VendorId, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </div> @* End of DIV -- class="panel-body" *@
+
+                                </div>@* End of DIV -- class="panel panel-default" id ="group-mappings" *@
+
+                                <div class="panel panel-default advanced-setting" id="group-advanced-setting">
+
+                                    <div class="panel-heading">Access control list</div>
+
+                                    <div class="panel-body">
+
+                                    </div> @* End of DIV -- class="panel-body" *@
+
+                                </div>@* End of DIV -- class="panel panel-default advanced-setting" id ="group-advanced-setting" *@
+
+                                <div class="panel panel-default advanced-setting" id="group-required-other-products">
+
+                                    <div class="panel-heading">Require other products</div>
+
+                                    <div class="panel-body">
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.productModel.RequireOtherProducts, htmlAttributes: new { @class = "control-label col-md-4" })
+                                            <div class="col-md-8">
+                                                <div class="checkbox">
+                                                    @Html.EditorFor(model => model.productModel.RequireOtherProducts).disableControl(() => isReadonly == true)
+                                                    @Html.ValidationMessageFor(model => model.productModel.RequireOtherProducts, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div> @* End of DIV -- class="panel-body" *@
+
+                                </div>@* End of DIV -- class="panel panel-default advanced-setting" id ="group-required-other-products" *@
+
+
+                            </div> @* Emd of -- second column --- <div class="panel-group"> *@
+
+                        </div> @*End of -- <div class="col-md-5">*@
+
+                    </div> @*End of -- <div class="tab-pane fade active in" id="tabProductInfo">*@
+
+                    <div class="tab-pane fade" id="tabSEO">
+                        <br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.productModel.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.productModel.MetaKeywords, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.productModel.MetaKeywords, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.productModel.MetaDescription, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.productModel.MetaDescription, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.productModel.MetaDescription, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.productModel.MetaTitle, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.productModel.MetaTitle, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.productModel.MetaTitle, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div> @*End of -- <div class="tab-pane fade" id="tabSEO"> *@
+
+                    <div class="tab-pane fade" id="tabPictures">
+                        <br />
+                        <label><b> In progress! </b> [Pictures]</label>
+                    </div>
+
+                    <div class="tab-pane fade" id="tabProductattributes">
+                        <br />
+                        <label><b> In progress!</b> [Product attributes]</label>
+                    </div>
+
+                    <div class="tab-pane fade" id="tabSpecificationattributes">
+                        <br />
+                        <label><b> In progress!  </b> [Specification attributes]</label>
+                    </div>
+
+                    <div class="tab-pane fade" id="tabOthers">
+                        <br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.productModel.ApprovedRatingSum, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.productModel.ApprovedRatingSum, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.productModel.ApprovedRatingSum, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.productModel.NotApprovedRatingSum, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.productModel.NotApprovedRatingSum, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.productModel.NotApprovedRatingSum, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.productModel.ApprovedTotalReviews, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.productModel.ApprovedTotalReviews, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.productModel.ApprovedTotalReviews, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.productModel.NotApprovedTotalReviews, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                @Html.EditorFor(model => model.productModel.NotApprovedTotalReviews, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.productModel.NotApprovedTotalReviews, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.productModel.SubjectToAcl, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-6">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.productModel.SubjectToAcl).disableControl(() => isReadonly == true)
+                                    @Html.ValidationMessageFor(model => model.productModel.SubjectToAcl, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div> @*End of -- <div class="tab-pane fade" id="tabOthers">*@
+
+                </div>
+            </fieldset>
+
+        </div>
+    }
+
+</div>
+
+
+ @*---Below Jquery is not required as same is called in _Layout via @Script
+    <script type="text/javascript" src="~/Scripts/jquery-1.9.1.js"> </script>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    } *@
+
+
+    <script type="text/javascript">
+
+        $(function () {
+            $('#dateTimePicketAvailableStartDateTimeUtc').datetimepicker({
+                format: 'DD-MM-YYYY hh:mm A',
+                sideBySide: true,
+                showClose: true,
+                showClear: true,
+                toolbarPlacement: 'top'
+            });
+        });
+    </script>
+
+<script type="text/javascript">
+
+    //--Below script stop form submitting on Enterkey press, still allow enterkey in multi line text area
+    $(document).keypress(function (e) {
+        if (e.which == 13 && e.target.tagName != 'TEXTAREA') {
+            return false;
+        }
+    });
+    //-------
+
+    $(document).ready(function () {
+
+        
+        $('#@Html.IdFor(model => model.productModel.ProductTypeId)').click(toggleProductType);
+        toggleProductType();
+
+        $('#@Html.IdFor(model => model.productModel.ShowOnHomePage)').click(toggleShowOnHomePage);
+        toggleShowOnHomePage();
+
+        $('#@Html.IdFor(model => model.productModel.MarkAsNew)').click(toggleMarkAsNew);
+        toggleMarkAsNew();
+
+        $('#@Html.IdFor(model => model.productModel.IsGiftCard)').click(toggleGiftCard);
+        toggleGiftCard();
+
+        $('#@Html.IdFor(model => model.productModel.IsRental)').click(toggleIsRental);
+        toggleIsRental();
+
+        $('#@Html.IdFor(model => model.productModel.AvailableForPreOrder)').click(toggleAvailableForPreOrder);
+        toggleAvailableForPreOrder();
+
+        $('#@Html.IdFor(model => model.productModel.IsTaxExempt)').click(toggleIsTaxExempt);
+        toggleIsTaxExempt();
+
+        $('#@Html.IdFor(model => model.productModel.DisplayStockAvailability)').click(toggleDisplayStockAvailability);
+        toggleDisplayStockAvailability();
+
+        $('#@Html.IdFor(model => model.productModel.CustomerEntersPrice)').click(toggleCustomerEntersPrice);
+        toggleCustomerEntersPrice();
+
+        $('#@Html.IdFor(model => model.productModel.IsShipEnabled)').click(toggleIsShipEnabled);
+        toggleIsShipEnabled();
+
+    });
+
+    function toggleShowOnHomePage() {
+        if ($('#@Html.IdFor(model => model.productModel.ShowOnHomePage)').is(':checked')) {
+            $("#divDisplayOrder").show();
+        }
+        else {
+            $("#divDisplayOrder").hide();
+        }
+    }
+
+    //MarkAsNew
+    function toggleMarkAsNew() {
+        if ($('#@Html.IdFor(model => model.productModel.MarkAsNew)').is(':checked')) {
+            $("#divMarkAsNew").show();
+        }
+        else {
+            $("#divMarkAsNew").hide();
+        }
+    }
+
+    //GiftCard
+    function toggleGiftCard() {
+        if ($('#@Html.IdFor(model => model.productModel.IsGiftCard)').is(':checked')) {
+            $("#divGiftCard").show();
+        }
+        else {
+            $("#divGiftCard").hide();
+        }
+    }
+
+    //IsRental
+    function toggleIsRental() {
+        if ($('#@Html.IdFor(model => model.productModel.IsRental)').is(':checked')) {
+            $("#divIsRental").show();
+        }
+        else {
+            $("#divIsRental").hide();
+        }
+    }
+
+    //toggleAvailableForPreOrder
+    function toggleAvailableForPreOrder() {
+        if ($('#@Html.IdFor(model => model.productModel.AvailableForPreOrder)').is(':checked')) {
+            $("#divPreOrderAvailabilityStartDateTimeUtc").show();
+        }
+        else {
+            $("#divPreOrderAvailabilityStartDateTimeUtc").hide();
+        }
+    }
+
+    //IsRental
+    function toggleIsRental() {
+        if ($('#@Html.IdFor(model => model.productModel.IsRental)').is(':checked')) {
+            $("#divIsRental").show();
+        }
+        else {
+            $("#divIsRental").hide();
+        }
+    }
+
+    //IsTaxExempt
+    function toggleIsTaxExempt() {
+        if ($('#@Html.IdFor(model => model.productModel.IsTaxExempt)').is(':checked')) {
+            $("#divTaxCategory").hide();
+        }
+        else {
+            $("#divTaxCategory").show();
+        }
+    }
+
+    //DisplayStockAvailability
+    function toggleDisplayStockAvailability() {
+        if ($('#@Html.IdFor(model => model.productModel.DisplayStockAvailability)').is(':checked')) {
+            $("#divDisplayStockQuantity").show();
+        }
+        else {
+            $("#divDisplayStockQuantity").hide();
+        }
+    }
+
+    //CustomerEntersPrice
+    function toggleCustomerEntersPrice() {
+        if ($('#@Html.IdFor(model => model.productModel.CustomerEntersPrice)').is(':checked')) {
+            $("#divCustomerEnteredPrice").show();
+        }
+        else {
+            $("#divCustomerEnteredPrice").hide();
+        }
+    }
+
+    //toggleIsShipEnabled
+    function toggleIsShipEnabled() {
+        if ($('#@Html.IdFor(model => model.productModel.IsShipEnabled)').is(':checked')) {
+            $("#divIsShipEnabled").show();
+        }
+        else {
+            $("#divIsShipEnabled").hide();
+        }
+    }
+
+    function toggleProductType() {
+        var simpleProductId = 5;
+        var groupedProductId = 10;
+
+        var selectedProductTypeId = $("#@Html.IdFor(model => model.productModel.ProductTypeId)").val();
+
+        if (!selectedProductTypeId || selectedProductTypeId == simpleProductId) {
+            $('#group-prices').show();
+            $('#tier-prices').show();
+            $('#group-required-other-products').show();
+            $('#group-giftcard').show();
+            $('#group-rental').show();
+            $('#group-shipping').show();
+            $('#group-inventory').show();
+            $('#group-associated-products').hide();
+        } else if (selectedProductTypeId == groupedProductId) {
+            $('#group-prices').hide();
+            $('#tier-prices').hide();
+            $('#group-required-other-products').hide();
+            $('#group-giftcard').hide();
+            $('#group-rental').hide();
+            $('#group-shipping').hide();
+            $('#group-inventory').hide();
+            $('#group-associated-products').show();
+        }
+
+    }// End of -- 
+
+</script>
+
+@*      ---------List of IDs-----------
+myTabContent
+tabProductInfo
+divDisplayOrder --Product
+divMarkAsNew
+group-giftcard
+divGiftCard
+group-rental
+divIsRental
+group-prices
+divPreOrderAvailabilityStartDateTimeUtc
+divCustomerEnteredPrice
+divTaxCategory
+tier-prices
+group-associated-products
+group-inventory
+divDisplayStockQuantity
+group-shipping
+group-dimension
+group-mappings
+group-advanced-setting
+group-required-other-products
+tabSEO
+tabPictures
+tabProductattributes
+tabSpecificationattributes
+tabOthers
+    *@
+
+

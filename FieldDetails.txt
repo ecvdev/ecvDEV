@@ -1,0 +1,1 @@
+1.	SeName [Search Engine Friendly Name] exist in UrlRecord table.

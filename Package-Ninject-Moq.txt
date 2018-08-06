@@ -1,0 +1,19 @@
+--Install-Package Ninject -version 3.0.1.10 -projectname ecvWebUI 
+--Install-Package Ninject.Web.Common -version 3.0.0.7 -projectname ecvWebUI 
+--Install-Package Ninject.MVC3 -Version 3.0.0.6 -projectname ecvWebUI
+
+--Install-Package Ninject -version 3.0.1.10 -projectname ecvAdminUI 
+--Install-Package Ninject.Web.Common -version 3.0.0.7 -projectname ecvAdminUI
+--Install-Package Ninject.MVC3 -Version 3.0.0.6 -projectname ecvAdminUI
+	---Uninstalled this and installed Ninject.MVC5 -Version 3.3.0
+--Install-Package Ninject.Web.WebApi -Version 3.3.0 -projectname ecvAdminUI
+ 
+--Install-Package Ninject -version 3.0.1.10 -projectname ecvUnitTests 
+--Install-Package Ninject.Web.Common -version 3.0.0.7 -projectname ecvUnitTests 
+--Install-Package Ninject.MVC3 -Version 3.0.0.6 -projectname ecvUnitTests 
+
+--Install-Package Moq -version 4.1.1309.1617 -projectname ecvWebUI 
+--Install-Package Moq -version 4.1.1309.1617 -projectname ecvAdminUI
+--Install-Package Moq -version 4.1.1309.1617 -projectname ecvUnitTests
+
+--Install-Package Microsoft.AspNet.Mvc 5.2.3 -projectname ecvUnitTests

@@ -1,0 +1,62 @@
+General information Section :
+=====================
+When "Product Type" is Simple
+		1. Inventory section is visible
+		2. Shipping section is visible
+		3. Associated products (variants)  is hidden
+	 
+When "Product Type" is Grouped
+		1. Associated products (variants)  is visible
+		2. Inventory section is hidden
+		3. Shipping section is hidden
+		4. Require other products  section is hidden
+
+When "Show on home page" is selected:
+		1. "Display order" should be visible
+
+
+When "Mark as new" is selected:
+		1. "Mark as new. Start date" should be visible
+		2. "Mark as new. End date" should be visible
+
+Gift card Section :
+=====================
+When "Is gift card" is selected:
+		1. "Gift card type" should be visible.
+
+Rental Section :
+=====================
+When "Is rental" is selected:
+		1. "Rental period length" should be visible.
+		2. "Rental price period" should be visible.
+
+Prices Section :
+=====================
+When "Available for pre-order" is selected:
+		1. "Pre-order availability start date" should be visible.
+
+When "Customer enters price" is selected:
+		1. "Minimum amount" should be visible.
+		2. "Maximum amount" should be visible.
+
+When "Is tax exempt" is selected:
+		1. "Tax category" should be hidden
+
+Inventory Section :
+=====================
+
+When "Inventory method" equal to "Don't track inventory".:
+
+		1. Stock quantity" should be hidden.
+		2. Multiple warehouses" should be hidden.
+		3. Display availability" should be hidden.
+		4. Display stock quantity" should be hidden.
+		5. Minimum stock qty" should be hidden.
+		6. Low stock activity" should be hidden.
+		7. Notify for qty below" should be hidden.
+		8. Backorders" should be hidden.
+		9. Allow back in stock subscriptions" should be hidden.
+		10. Product availability range" should be hidden.
+
+
+

@@ -1,0 +1,111 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{16664516-853D-4761-B4C1-8D5748C71700}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{FC809164-FDEF-49E8-8C0C-FA6A8893C232}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{6AB70A5F-471C-45D3-A946-9D1C7DDBB3CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ecvLib", "Libraries\ecvLib\ecvLib.csproj", "{2807986C-EC92-4F59-B92F-C4252AFB07B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ecvWebUI", "Presentation\ecvWebUI\ecvWebUI.csproj", "{9F3FAC3C-FE35-46B3-9F14-AA91C61C2D13}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2807986C-EC92-4F59-B92F-C4252AFB07B0} = {2807986C-EC92-4F59-B92F-C4252AFB07B0}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ecvAdminUI", "Presentation\ecvAdminUI\ecvAdminUI.csproj", "{8A6EF4E1-BED4-4A73-9C9B-8D9A97776430}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2807986C-EC92-4F59-B92F-C4252AFB07B0} = {2807986C-EC92-4F59-B92F-C4252AFB07B0}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ecvUnitTests", "Tests\ecvUnitTests\ecvUnitTests.csproj", "{5A9C7335-58EF-40D1-B579-F785E97DE7D5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9F3FAC3C-FE35-46B3-9F14-AA91C61C2D13} = {9F3FAC3C-FE35-46B3-9F14-AA91C61C2D13}
+		{2807986C-EC92-4F59-B92F-C4252AFB07B0} = {2807986C-EC92-4F59-B92F-C4252AFB07B0}
+		{8A6EF4E1-BED4-4A73-9C9B-8D9A97776430} = {8A6EF4E1-BED4-4A73-9C9B-8D9A97776430}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ZTempResources", "ZTempResources", "{0C04B9D3-71A2-4594-B18A-895A2C44937E}"
+	ProjectSection(SolutionItems) = preProject
+		BusinessRules.txt = BusinessRules.txt
+		buttonimageShowHide.txt = buttonimageShowHide.txt
+		Continue.txt = Continue.txt
+		Css123.txt = Css123.txt
+		EFCommands.txt = EFCommands.txt
+		ErrorHandling.txt = ErrorHandling.txt
+		FieldDetails.txt = FieldDetails.txt
+		Issues.txt = Issues.txt
+		Links.txt = Links.txt
+		Package-Ninject-Moq.txt = Package-Ninject-Moq.txt
+		Packages.txt = Packages.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{0C1E39AC-C1BF-41A0-A64F-50E7F4420B95}"
+	ProjectSection(SolutionItems) = preProject
+		CategorySeedQuery.txt = CategorySeedQuery.txt
+		ProductSeedQuery.txt = ProductSeedQuery.txt
+		Test1.html = Test1.html
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ecvLibDAL", "Libraries\ecvLibDAL\ecvLibDAL.csproj", "{D4E882C0-F949-4AF3-9E8D-3B3DE48B1D0E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ecvLibServices", "Libraries\ecvLibServices\ecvLibServices.csproj", "{ABDBD051-1ADE-4B41-85C1-E08885E662ED}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2807986C-EC92-4F59-B92F-C4252AFB07B0} = {2807986C-EC92-4F59-B92F-C4252AFB07B0}
+		{D4E882C0-F949-4AF3-9E8D-3B3DE48B1D0E} = {D4E882C0-F949-4AF3-9E8D-3B3DE48B1D0E}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ecvLibDTOs", "Libraries\ecvLibDTOs\ecvLibDTOs.csproj", "{0E6D06C9-0C19-40CE-85C4-5E739EAA5E4A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2807986C-EC92-4F59-B92F-C4252AFB07B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2807986C-EC92-4F59-B92F-C4252AFB07B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2807986C-EC92-4F59-B92F-C4252AFB07B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2807986C-EC92-4F59-B92F-C4252AFB07B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F3FAC3C-FE35-46B3-9F14-AA91C61C2D13}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F3FAC3C-FE35-46B3-9F14-AA91C61C2D13}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F3FAC3C-FE35-46B3-9F14-AA91C61C2D13}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F3FAC3C-FE35-46B3-9F14-AA91C61C2D13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A6EF4E1-BED4-4A73-9C9B-8D9A97776430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A6EF4E1-BED4-4A73-9C9B-8D9A97776430}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A6EF4E1-BED4-4A73-9C9B-8D9A97776430}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A6EF4E1-BED4-4A73-9C9B-8D9A97776430}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A9C7335-58EF-40D1-B579-F785E97DE7D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A9C7335-58EF-40D1-B579-F785E97DE7D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A9C7335-58EF-40D1-B579-F785E97DE7D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A9C7335-58EF-40D1-B579-F785E97DE7D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4E882C0-F949-4AF3-9E8D-3B3DE48B1D0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4E882C0-F949-4AF3-9E8D-3B3DE48B1D0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4E882C0-F949-4AF3-9E8D-3B3DE48B1D0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4E882C0-F949-4AF3-9E8D-3B3DE48B1D0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABDBD051-1ADE-4B41-85C1-E08885E662ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABDBD051-1ADE-4B41-85C1-E08885E662ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABDBD051-1ADE-4B41-85C1-E08885E662ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABDBD051-1ADE-4B41-85C1-E08885E662ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E6D06C9-0C19-40CE-85C4-5E739EAA5E4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E6D06C9-0C19-40CE-85C4-5E739EAA5E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E6D06C9-0C19-40CE-85C4-5E739EAA5E4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E6D06C9-0C19-40CE-85C4-5E739EAA5E4A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2807986C-EC92-4F59-B92F-C4252AFB07B0} = {16664516-853D-4761-B4C1-8D5748C71700}
+		{9F3FAC3C-FE35-46B3-9F14-AA91C61C2D13} = {FC809164-FDEF-49E8-8C0C-FA6A8893C232}
+		{8A6EF4E1-BED4-4A73-9C9B-8D9A97776430} = {FC809164-FDEF-49E8-8C0C-FA6A8893C232}
+		{5A9C7335-58EF-40D1-B579-F785E97DE7D5} = {6AB70A5F-471C-45D3-A946-9D1C7DDBB3CE}
+		{0C1E39AC-C1BF-41A0-A64F-50E7F4420B95} = {0C04B9D3-71A2-4594-B18A-895A2C44937E}
+		{D4E882C0-F949-4AF3-9E8D-3B3DE48B1D0E} = {16664516-853D-4761-B4C1-8D5748C71700}
+		{ABDBD051-1ADE-4B41-85C1-E08885E662ED} = {16664516-853D-4761-B4C1-8D5748C71700}
+		{0E6D06C9-0C19-40CE-85C4-5E739EAA5E4A} = {16664516-853D-4761-B4C1-8D5748C71700}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,7 @@
+Enable-Migrations
+
+Add-Migration
+
+Update-Database
+
+update-database -TargetMigration "<migration name>"

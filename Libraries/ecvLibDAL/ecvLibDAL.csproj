@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D4E882C0-F949-4AF3-9E8D-3B3DE48B1D0E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ecvLibDAL</RootNamespace>
+    <AssemblyName>ecvLibDAL</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ecvDataAnnotation\Catalog\CategoryDataAnnotation.cs" />
+    <Compile Include="ecvDataAnnotation\Catalog\ManufacturerDataAnnotation.cs" />
+    <Compile Include="ecvDataAnnotation\Catalog\ProductCategoryDataAnnotation.cs" />
+    <Compile Include="ecvDataAnnotation\Catalog\ProductDataAnnotation.cs" />
+    <Compile Include="ecvDataAnnotation\Catalog\ProductTypeDataAnnotation.cs" />
+    <Compile Include="ecvDataAnnotation\Vendors\VendorDataAnnotation.cs" />
+    <Compile Include="ecvDataManage\ecvContextSeeder.cs" />
+    <Compile Include="ecvDBContext.cs" />
+    <Compile Include="ecvEntityConfig\ecvEntityTypeConfiguration.cs" />
+    <Compile Include="ecvRepositories\Catalog\CategoryRepository.cs" />
+    <Compile Include="ecvRepositories\Catalog\ICategoryRepository.cs" />
+    <Compile Include="ecvRepositories\Catalog\IManufacturerRepository.cs" />
+    <Compile Include="ecvRepositories\Catalog\IProductRepository.cs" />
+    <Compile Include="ecvRepositories\Catalog\IProductTypeRepository.cs" />
+    <Compile Include="ecvRepositories\Catalog\ManufacturerRepository.cs" />
+    <Compile Include="ecvRepositories\Catalog\ProductRepository.cs" />
+    <Compile Include="ecvRepositories\Catalog\ProductTypeRepository.cs" />
+    <Compile Include="ecvRepositories\ecvRepository.cs" />
+    <Compile Include="ecvRepositories\IRepository.cs" />
+    <Compile Include="ecvRepositories\Vendors\IVendorRepository.cs" />
+    <Compile Include="ecvRepositories\Vendors\VendorRepository.cs" />
+    <Compile Include="ecvUnitOfWork\ecvUnitOfWork.cs" />
+    <Compile Include="ecvUnitOfWork\IUnitOfWork.cs" />
+    <Compile Include="Migrations\201709091154443_InitCategory.cs" />
+    <Compile Include="Migrations\201709091154443_InitCategory.Designer.cs">
+      <DependentUpon>201709091154443_InitCategory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710051058366_Add Product table.cs" />
+    <Compile Include="Migrations\201710051058366_Add Product table.Designer.cs">
+      <DependentUpon>201710051058366_Add Product table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710071128279_Add StoreID in Category.cs" />
+    <Compile Include="Migrations\201710071128279_Add StoreID in Category.Designer.cs">
+      <DependentUpon>201710071128279_Add StoreID in Category.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710080603475_Category Data Annotation.cs" />
+    <Compile Include="Migrations\201710080603475_Category Data Annotation.Designer.cs">
+      <DependentUpon>201710080603475_Category Data Annotation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710080628438_Product Data Annotation.cs" />
+    <Compile Include="Migrations\201710080628438_Product Data Annotation.Designer.cs">
+      <DependentUpon>201710080628438_Product Data Annotation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201710080714173_ProductCategory.cs" />
+    <Compile Include="Migrations\201710080714173_ProductCategory.Designer.cs">
+      <DependentUpon>201710080714173_ProductCategory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201711050634525_Add ProductType Table.cs" />
+    <Compile Include="Migrations\201711050634525_Add ProductType Table.Designer.cs">
+      <DependentUpon>201711050634525_Add ProductType Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712080601006_AddManufacturerEntity.cs" />
+    <Compile Include="Migrations\201712080601006_AddManufacturerEntity.Designer.cs">
+      <DependentUpon>201712080601006_AddManufacturerEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712080621471_ManufacturerDataAnnotation.cs" />
+    <Compile Include="Migrations\201712080621471_ManufacturerDataAnnotation.Designer.cs">
+      <DependentUpon>201712080621471_ManufacturerDataAnnotation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801111118400_AddVendorEntity.cs" />
+    <Compile Include="Migrations\201801111118400_AddVendorEntity.Designer.cs">
+      <DependentUpon>201801111118400_AddVendorEntity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801111135570_AddVendorDataAnnotation.cs" />
+    <Compile Include="Migrations\201801111135570_AddVendorDataAnnotation.Designer.cs">
+      <DependentUpon>201801111135570_AddVendorDataAnnotation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801140404218_AddDatesInVendors.cs" />
+    <Compile Include="Migrations\201801140404218_AddDatesInVendors.Designer.cs">
+      <DependentUpon>201801140404218_AddDatesInVendors.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201709091154443_InitCategory.resx">
+      <DependentUpon>201709091154443_InitCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710051058366_Add Product table.resx">
+      <DependentUpon>201710051058366_Add Product table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710071128279_Add StoreID in Category.resx">
+      <DependentUpon>201710071128279_Add StoreID in Category.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710080603475_Category Data Annotation.resx">
+      <DependentUpon>201710080603475_Category Data Annotation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710080628438_Product Data Annotation.resx">
+      <DependentUpon>201710080628438_Product Data Annotation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201710080714173_ProductCategory.resx">
+      <DependentUpon>201710080714173_ProductCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201711050634525_Add ProductType Table.resx">
+      <DependentUpon>201711050634525_Add ProductType Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712080601006_AddManufacturerEntity.resx">
+      <DependentUpon>201712080601006_AddManufacturerEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712080621471_ManufacturerDataAnnotation.resx">
+      <DependentUpon>201712080621471_ManufacturerDataAnnotation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801111118400_AddVendorEntity.resx">
+      <DependentUpon>201801111118400_AddVendorEntity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801111135570_AddVendorDataAnnotation.resx">
+      <DependentUpon>201801111135570_AddVendorDataAnnotation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801140404218_AddDatesInVendors.resx">
+      <DependentUpon>201801140404218_AddDatesInVendors.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ecvLib\ecvLib.csproj">
+      <Project>{2807986C-EC92-4F59-B92F-C4252AFB07B0}</Project>
+      <Name>ecvLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

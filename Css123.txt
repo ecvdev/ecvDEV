@@ -1,0 +1,32 @@
+ProductTemplateId
+
+
+            <div class="panel panel-default advanced-setting" id="">
+
+                <div class="panel-heading"></div>
+
+                <div class="panel-body">
+
+                </div> @* End of DIV -- class="panel-body" *@
+
+            </div>@* End of DIV -- class="panel panel-default advanced-setting" id ="" *@
+
+========================================== Create Tabs===========================================
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tabProductInfo" data-toggle="tab">Product Info</a></li>
+                <li><a href="#tabSEO" data-toggle="tab">SEO</a></li>
+                <li><a href="#tabOthers" data-toggle="tab">Others</a></li>
+            </ul>
+
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="tabProductInfo">
+                    <label>Tab 1</label>
+                </div>
+                <div class="tab-pane fade" id="tabSEO">
+                    <label>Tab 2</label>
+                </div>
+                <div class="tab-pane fade" id="tabOthers">
+                    <label>Tab 3</label>
+                </div>
+            </div>
+============================================End Tabs=============================================

@@ -1,0 +1,54 @@
+﻿@model PagedList<ecvAdminUI.Models.Catalog.ManufacturerListModel>
+
+@using ecvLib.Core
+@using ecvLib.Core.HtmlHelpers
+
+
+@{
+    ViewBag.Title = "Manufacturers List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+    <h2>Manufacturers List (@Model.TotalCount)</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "New")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                <label>Name</label>
+            </th>
+            <th>
+                <label>Published</label>
+            </th>
+            <th>
+                <label>Display Order</label>
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Published)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DisplayOrder)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { manufacturerID = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { manufacturerID = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { manufacturerID = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

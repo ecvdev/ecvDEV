@@ -1,0 +1,65 @@
+https://forums.asp.net/t/1851625.aspx?Dynamically+Load+Menu+on+layout+page+in+MVC+razor
+
+
+<======================Documentation======================>
+https://docs.microsoft.com/en-us/aspnet/mvc/overview/performance/bundling-and-minification
+<--------------------------------------------------------------->
+
+
+<======================How to use CSS LESS======================>
+https://www.youtube.com/watch?v=oh7_iZWvIyU
+https://www.youtube.com/watch?v=-D5mWO9_vLI
+<--------------------------------------------------------------->
+
+<======================How to use DateTime Picker======================>
+http://www.skimedic.com/blog/post/2015/04/03/Using-a-DateTime-Picker-for-ASPNET-MVC-5-with-Bootstrap.aspx
+http://momentjs.com/docs/#/displaying/format/
+https://www.codeproject.com/Articles/1136464/Simplest-Way-to-Use-JQuery-Date-Picker-and-Date-Ti
+
+<--------------------------------------------------------------->
+
+
+<======================How to use Chosen (Dropdown multi select)======================>
+http://www.c-sharpcorner.com/blogs/creating-dropdowns-and-multiselect-boxes-using-chosen-jquery-library
+https://www.intertech.com/Blog/selecting-multiple-items-using-select2-in-mvc-5/
+https://www.mitechdev.com/2016/05/chosen-js-in-mvc5.html
+https://stackoverflow.com/questions/18075803/how-to-implement-multiple-select-in-mvc-3-using-chosen-js-plugin
+
+https://harvesthq.github.io/chosen/
+<--------------------------------------------------------------->
+
+<======================How to create custom Data annotation======================>
+
+https://stackoverflow.com/questions/28090143/best-practices-viewmodel-validation-in-asp-net-mvc
+http://www.ezzylearning.com/tutorial/creating-custom-validation-attribute-in-asp-net-mvc
+http://www.c-sharpcorner.com/article/custom-data-annotation-validation-in-mvc/
+https://code.msdn.microsoft.com/Build-Custom-Data-840477b9
+<--------------------------------------------------------------->
+
+http://ezzylearning.com/
+
+<========================Globalization and Localization setting===============>
+https://www.youtube.com/watch?v=3YUzLXepfsE
+<----------------------------------------------------------------------------->
+
+<========================Form, Validation & Business Rules===============>
+https://weblogs.asp.net/scottgu/asp-net-mvc-preview-5-and-form-posting-scenarios
+https://weblogs.asp.net/scottgu/asp-net-mvc-2-model-validation
+------------------------
+https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions-1/models-data/validating-with-a-service-layer-cs
+https://stackoverflow.com/questions/2783865/class-model-level-validation-as-opposed-to-property-level-asp-net-mvc-2-0
+https://msdn.microsoft.com/en-us/library/system.componentmodel.idataerrorinfo(v=vs.95).aspx
+
+http://www.c-sharpcorner.com/article/fluent-validation-in-asp-net-mvc/
+https://www.exceptionnotfound.net/asp-net-mvc-demystified-modelstate/
+<----------------------------------------------------------------------------->
+
+<===============================Custom Auto Mapper================================>
+https://weblogs.asp.net/psteele/super-simple-object-mapper
+<--------------------------------------------------------------------------------->
+<===============================Parent Category Example================================>
+https://dzone.com/articles/using-self-referencing-tables
+https://www.youtube.com/watch?v=FBIKnxol_dA
+<--------------------------------------------------------------------------------->
+
+www.jqwidgets.com

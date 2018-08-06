@@ -1,0 +1,224 @@
+﻿
+@{string tmpPadTop = "0px"; }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@ViewBag.Title</title>
+    <!-- Bootstrap core CSS -->
+
+    @Styles.Render("~/Content/css")
+
+    @*<link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/dashboard.css" rel="stylesheet" />
+    <link href="~/Content/ecvStyleSheet001.css" rel="stylesheet" />
+
+    <script src="~/Scripts/modernizr-2.6.2.js"></script>*@
+  
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">@ViewBag.Title</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="#">Settings</a></li>
+                    <li><a href="#">Profile</a></li>
+                    <li><a href="#">Help</a></li>
+                </ul>
+                <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" placeholder="Search...">
+                </form>
+
+            </div>
+
+            <div>
+                @*<div class="alert alert-success">Test</div>*@
+                @if (TempData["message"] != null)
+                {
+                    <div class="alert alert-success">@TempData["message"]</div>
+                    tmpPadTop = "80px";
+                }
+                @if (TempData["errorMessage"] != null)
+                {
+                    <div class="alert alert-danger">Error : @TempData["errorMessage"]</div>
+                    tmpPadTop = "80px";
+                }
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="container-fluid" style="padding-top:@tmpPadTop">
+        <div class="row">
+            <div class="col-sm-3 col-md-2 sidebar" style="padding-top:@tmpPadTop">
+                <ul class="nav nav-sidebar">
+                    <li>
+                        @*("TextToDisplay", "ActionMehod", "ControllerName")*@
+                        @Html.ActionLink("Dashboard", "Index", "Home", null, new
+                   {
+                       @class = ViewContext.RouteData.Values["controller"].ToString().Equals("Home") & ViewContext.RouteData.Values["action"].ToString().Equals("Index")
+                            ? "nav_selected" : ""
+                   })
+                    </li>
+
+                    <li>
+                        <a data-toggle="collapse" href="#clp_Catalog" id="clp_CatalogA">Catalog <span style="float:right" class="glyphicon glyphicon-triangle-left"></span></a>
+
+                        @{
+                            string tmpClass = "collapse";
+                            string tmpClass_Sales = "collapse";
+                        }
+
+                        @if (ViewContext.RouteData.Values["controller"].ToString().Equals("Product") || ViewContext.RouteData.Values["controller"].ToString().Equals("Category") || ViewContext.RouteData.Values["controller"].ToString().Equals("Manufacturer"))
+                        {
+                            tmpClass = "collapse in";
+                        }
+                        else if (ViewContext.RouteData.Values["controller"].ToString().Equals("Orders") || ViewContext.RouteData.Values["controller"].ToString().Equals("Shipments"))
+                        {
+                            tmpClass_Sales = "collapse in";
+                        }
+                        <ul class="nav @tmpClass nav-second-level" id="clp_Catalog">
+                            <li>
+                                @*<a href="#">Products</a>*@
+                                @Html.ActionLink("Products", "List", "Product", null, new
+                           {
+                               @class = ViewContext.RouteData.Values["controller"].ToString().Equals("Product") & ViewContext.RouteData.Values["action"].ToString().Equals("List")
+                                                       ? "nav_selected" : ""
+                           })
+                            </li>
+                            <li>
+                                @*("TextToDisplay", "ActionMehod", "ControllerName")*@
+                                @Html.ActionLink("Categories", "List", "Category", null, new
+                           {
+                               @class = ViewContext.RouteData.Values["controller"].ToString().Equals("Category") & ViewContext.RouteData.Values["action"].ToString().Equals("List")
+                                               ? "nav_selected" : ""
+                           })
+                            </li>
+                            <li>
+                                @*("TextToDisplay", "ActionMehod", "ControllerName")*@
+                                @Html.ActionLink("Manufacturers", "List", "Manufacturer", null, new
+                           {
+                               @class = ViewContext.RouteData.Values["controller"].ToString().Equals("Manufacturer") & ViewContext.RouteData.Values["action"].ToString().Equals("List")
+                                               ? "nav_selected" : ""
+                           })
+                            </li>
+                        </ul>
+                        @*<div id="clp_Catalog" class="collapse" style="background-color:#eee"> </div>*@
+                    </li>
+
+                    <li>
+                        <a data-toggle="collapse" href="#clp_Sales">Sales <span style="float:right" class="glyphicon glyphicon-triangle-left"></span></a>
+
+                        <ul class="nav @tmpClass_Sales nav-second-level" id="clp_Sales">
+                            <li><a href="#">Orders</a></li>
+                            <li><a href="#">Shipments</a></li>
+                        </ul>
+
+                    </li>
+                    <li><a href="">Customers</a></li>
+                    <li>
+                        @*<a href="">Vendors</a>*@
+                        @Html.ActionLink("Vendors", "List", "Vendor", null, new
+                   {
+                       @class = ViewContext.RouteData.Values["controller"].ToString().Equals("Vendor") & ViewContext.RouteData.Values["action"].ToString().Equals("List")
+                                                                       ? "nav_selected" : ""
+                   })
+                    </li>
+                    <li><a href="" class="active">Promotions</a></li>
+                    <li><a href="">Content management</a></li>
+                    <li><a href="">Configuration</a></li>
+                    <li><a href="">System</a></li>
+                    <li><a href="">Help</a></li>
+                </ul>
+
+            </div> @*End of ---<div class="col-sm-3 col-md-2 sidebar">---*@
+
+            @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>*@
+
+            @*<script src="~/Scripts/bootstrap.js"></script>*@
+            @Scripts.Render("~/bundles/jquery")
+            @Scripts.Render("~/bundles/bootstrap")
+            @Scripts.Render("~/bundles/datetime")
+            @Scripts.Render("~/bundles/chosen")
+            @Scripts.Render("~/bundles/jquerydatatable")
+            @*@Scripts.Render("~/bundles/jqueryval")*@
+            @RenderSection("scripts", required: false)
+
+            <script>
+                //$('.nav-second-level').click(alert('test'));
+                $(document).ready(function () {
+                    $("#clp_Catalog").click(function () {
+                        //Do stuff when clicked
+                        //alert('testA')
+                        $("#clp_Catalog").removeClass("collapse").addClass("collapse in")
+                    });
+                });
+            </script>
+
+            @RenderBody()
+
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+
+@*<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - My ASP.NET Application</title>
+        <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+        <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+
+        <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+        <script src="~/Scripts/bootstrap.min.js"></script>
+    </body>
+    </html>*@

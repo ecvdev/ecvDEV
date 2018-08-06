@@ -1,0 +1,3 @@
+When in DEV mode set customError = "On"
+When in DEV mode set customError = "RemoteOnly"
+--To See customer error page always use option "Start Without Debugging".

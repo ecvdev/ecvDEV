@@ -1,0 +1,122 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Test Page</title>
+    <script type="text/javascript">
+    $(function () {
+        $('li').has('ul').click(function (event) {
+            if (this == event.target) {
+                $(this).toggleClass('open');
+                $(this).children('ul').toggle();
+                if ($(this).siblings().hasClass('open')) {
+                    $(this).siblings().addClass('closed').removeClass('open').children('ul').hide();
+                }
+            }
+        }).addClass('closed').children('ul').hide();
+    });
+
+    </script>
+
+</head>
+<body>
+<style>
+    ul {
+    list-style-type: none
+    }
+    ul li {
+    margin-bottom: 0;
+    padding-left: 1.5em
+    }
+    .closed {
+    background: url('http://www.planeswalkerslibrary.com/images/plus_icon.jpg') no-repeat 0 0;
+    }
+    .open {
+    background: url('http://www.planeswalkerslibrary.com/images/minus_icon.jpg') no-repeat 0 0;
+    }
+    a {
+    color:#0000FF;
+    }
+    /* unvisited link */
+    a:visited {
+    color:#0000FF;
+    }
+    /* visited link */
+    a:hover {
+    color:#0000FF;
+    }
+    /* mouse over link */
+    a:active {
+    color:#0000FF;
+    }
+    /* selected link */
+
+</style>
+
+
+
+    <ul>
+        <li>
+            <b>Item One</b>
+            <ul>
+                <li>a</li>
+            </ul>
+            <ul>
+                <li>b</li>
+            </ul>
+            <ul>
+                <li>c</li>
+            </ul>
+            <ul>
+                <li>d</li>
+            </ul>
+        </li>
+        <li>
+            <b>Item Two</b>
+            <ul>
+                <li>e</li>
+            </ul>
+            <ul>
+                <li>f</li>
+            </ul>
+            <ul>
+                <li>g</li>
+            </ul>
+            <ul>
+                <li>h</li>
+            </ul>
+        </li>
+        <li>
+            <b>Item Three</b>
+            <ul>
+                <li>i</li>
+            </ul>
+            <ul>
+                <li>j</li>
+            </ul>
+            <ul>
+                <li>k</li>
+            </ul>
+            <ul>
+                <li>l</li>
+            </ul>
+        </li>
+        <li>
+            <b>Item Four</b>
+            <ul>
+                <li>m</li>
+            </ul>
+            <ul>
+                <li>n</li>
+            </ul>
+            <ul>
+                <li>o</li>
+            </ul>
+            <ul>
+                <li>p</li>
+            </ul>
+        </li>
+    </ul>
+</body>
+</html>

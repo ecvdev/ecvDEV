@@ -1,0 +1,9 @@
+1.-----------
+After adding package "jquery.validate.unobtrusive" 
+Chrome is not validating date format "dd/MM/yyyy hh:mm:ss A".
+=======================================================================
+
+2.----------
+When deleting record should validate Model?
+On Edit/Delete page when hit enter key, form is submitting, should it allow?
+

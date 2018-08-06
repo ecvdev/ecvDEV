@@ -1,0 +1,54 @@
+﻿@model PagedList<ecvAdminUI.Models.Vendors.VendorListModel>
+
+@using ecvLib.Core
+@using ecvLib.Core.HtmlHelpers
+
+
+@{
+    ViewBag.Title = "Vendors List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+
+    <h2>Vendor List (@Model.TotalCount)</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "New")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                <label>Name</label>
+            </th>
+            <th>
+                <label>Email</label>
+            </th>
+            <th>
+                <label>Active</label>
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Active)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { vendorID = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { vendorID = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { vendorID = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

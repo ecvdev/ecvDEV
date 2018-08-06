@@ -1,0 +1,100 @@
+﻿@model ecvAdminUI.Models.Catalog.ProductListModel
+
+@using ecvLib.Core
+@using ecvLib.Core.HtmlHelpers
+
+@{
+    ViewBag.Title = "Products List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    
+    <h1 class="page-header">Products List Data Table</h1>
+
+    <p>
+        @Html.ActionLink("Create New", "New")
+    </p>
+
+    <table class="table table-striped table-condensed table-bordered" id="tableProducts">
+        <thead>
+            <tr>
+                <th class="text-center">
+                    <label>Name</label>
+                </th>
+                <th class="text-center">
+                    <lable>Sku</lable>
+                </th>
+                <th class="text-center">
+                    <label>StockQuantity</label>
+                </th>
+                <th class="text-center">
+                    <label>Price</label>
+                </th>
+                <th class="text-center">
+                    <label>Published</label>
+                </th>
+                <th class="text-center">
+                    <label>Actions</label>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody></tbody>
+
+    </table>
+
+    <script>
+        function submitform() {
+            $('form').submit();
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var AAA = $("#tableProducts").DataTable({
+                "autoWidth": false,
+                ajax: {
+                    url: "/Api/Product/GetProductList",
+                    dataSrc:""
+                },
+                columns: [
+                    {
+                        data: "Name"
+                    },
+                    {
+                        data: "Sku"
+                    },
+                    {
+                        data: "StockQuantity"
+                        ,class: "text-right"
+                    },
+                    {
+                        data: "Price"
+                        ,class: "text-right"
+                    },
+                    {
+                        data: "Published",
+                        render: function (data, type, full) {
+                            if (data == "1") {
+                                return '<input checked="checked" class="check-box" disabled="disabled" type="checkbox"> <p style=\'visibility: hidden; display: none;\'>True</p>';
+                                
+                            } else {
+                                return '<input class="check-box" disabled="disabled" type="checkbox"> <p style=\'visibility: hidden; display: none;\'>False</p>';
+                            }
+                        },
+                        class: "text-center"
+                    },
+                    {
+                        data: "Id",
+                        render: function (data, type, ProductListModel) {
+                            return "<a href='/product/Edit/?productId=" + ProductListModel.Id + "'> Edit </a> | <a href='/Product/Details?productId=" + ProductListModel.Id + "'> Details </a> | <a href='/Product/Delete?productId=" + ProductListModel.Id + "'> Delete </a>"
+                            ;
+                        },
+                        class: "text-center"
+                    }
+                ]
+            });
+        });
+    </script>
+</div>

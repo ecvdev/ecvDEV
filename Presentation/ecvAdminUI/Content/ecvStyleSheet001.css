@@ -1,0 +1,6 @@
+﻿.showhideElement { display:none; background-color:chocolate; }
+
+input[type=checkbox]:checked ~ div.showhideElement {
+  display:block;
+  color: red;
+}

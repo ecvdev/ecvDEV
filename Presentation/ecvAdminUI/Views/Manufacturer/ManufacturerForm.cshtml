@@ -1,0 +1,305 @@
+﻿@model ecvAdminUI.ViewModels.Catalog.ManufacturerViewModel
+
+@using ecvLib.Core
+@using ecvLib.Core.HtmlHelpers
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ bool isReadonly = false;}
+@{ string submitAction = "";}
+
+@{string _Title = ""; }
+@if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.New)
+{
+    isReadonly = false;
+    _Title = "Create New Manufacturer";
+    submitAction = "SaveNew";
+}
+else if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Edit)
+{
+    isReadonly = false;
+    _Title = "Edit Manufacturer Details";
+    submitAction = "SaveEdit";
+}
+else if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Detail)
+{
+    isReadonly = true;
+    _Title = "Display Manufacturer Details";
+    submitAction = "Details";
+}
+else if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Delete)
+{
+    isReadonly = true;
+    _Title = "Delete Manufacturer Details";
+    submitAction = "DeleteConfirmed";
+}
+
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    @using (Html.BeginForm(submitAction, "Manufacturer", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            <h4> @_Title : @Model.manufacturerModel.Name</h4>
+
+            <fieldset>
+                <div>
+                    <table style="width:100%">
+                        <tbody>
+                            <tr>
+                                <td style="width:50%">
+                                    <div>
+                                        @Html.ActionLink("Back to List", "List")
+                                    </div>
+                                </td>
+
+                                @if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.New || Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Edit)
+                                {
+                                    <td style="width:50%; float:right">
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" value="Save" class="btn btn-default" />
+                                            </div>
+                                        </div>
+                                    </td>
+                                }
+                                else if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Detail || Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Delete)
+                                {
+                                    <td style="width:50%; float:none">
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+
+                                                @if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Detail)
+                                                {
+                                                    @Html.ActionLink("Edit", "Edit", new { manufacturerID = @Model.manufacturerModel.Id })
+                                                    <span>   </span>
+                                                    @Html.ActionLink("Delete", "Delete", new { manufacturerID = @Model.manufacturerModel.Id })
+                                                }
+                                                else if (Model.operationType == ecvLib.Core.ecvOperationStatus.ecvOperationStatus.OperationType.Delete)
+                                                {
+                                                    <p class="label label-danger">Do you want to delete this record?</p>
+                                                    <input type="submit" value="Yes" class="btn btn-link" />
+                                                }
+                                            </div>
+                                        </div>
+                                    </td>
+                                }
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+                <hr />
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.manufacturerModel.Id)
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#tabManufacturerInfo" data-toggle="tab">Manufacturer Info</a></li>
+                    <li><a href="#tabSEO" data-toggle="tab">SEO</a></li>
+                    <li><a href="#tabProducts" data-toggle="tab">Products</a></li>
+                </ul>
+
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade active in" id="tabManufacturerInfo">
+                        <br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.Name, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.manufacturerModel.Name, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.Name, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.Description, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.manufacturerModel.Description, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.Description, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.ManufacturerTemplateId, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.manufacturerModel.ManufacturerTemplateId, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.ManufacturerTemplateId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.PictureId, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.manufacturerModel.PictureId, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.PictureId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.PriceRanges, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.manufacturerModel.PriceRanges, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.PriceRanges, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.AllowCustomersToSelectPageSize, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.manufacturerModel.AllowCustomersToSelectPageSize).disableControl(() => isReadonly == true)
+                                    @Html.ValidationMessageFor(model => model.manufacturerModel.AllowCustomersToSelectPageSize, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="divPageSizeOptions">
+                            @Html.LabelFor(model => model.manufacturerModel.PageSizeOptions, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.manufacturerModel.PageSizeOptions, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.PageSizeOptions, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group" id="divPageSize" style="display:none">
+                            @Html.LabelFor(model => model.manufacturerModel.PageSize, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.manufacturerModel.PageSize, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.PageSize, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.Published, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-5">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.manufacturerModel.Published).disableControl(() => isReadonly == true)
+                                    @Html.ValidationMessageFor(model => model.manufacturerModel.Published, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.DisplayOrder, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.manufacturerModel.DisplayOrder, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.DisplayOrder, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.Deleted, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-5">
+                                <div class="checkbox">
+                                    @Html.EditorFor(model => model.manufacturerModel.Deleted).disableControl(() => isReadonly == true)
+                                    @Html.ValidationMessageFor(model => model.manufacturerModel.Deleted, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.CreatedOnUtc, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.manufacturerModel.CreatedOnUtc, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.CreatedOnUtc, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.UpdatedOnUtc, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-5">
+                                @Html.EditorFor(model => model.manufacturerModel.UpdatedOnUtc, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.UpdatedOnUtc, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                    </div> @*End of -- <div class="tab-pane fade active in" id="tabCategoryInfo"> *@
+
+                    <div class="tab-pane fade" id="tabSEO">
+                        <br />
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.MetaKeywords, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.manufacturerModel.MetaKeywords, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.MetaKeywords, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.MetaDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.manufacturerModel.MetaDescription, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.MetaDescription, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.manufacturerModel.MetaTitle, htmlAttributes: new { @class = "control-label col-md-3" })
+                            <div class="col-md-8">
+                                @Html.EditorFor(model => model.manufacturerModel.MetaTitle, new { htmlAttributes = new { @class = "form-control" } }).readonlyControl(() => isReadonly == true)
+                                @Html.ValidationMessageFor(model => model.manufacturerModel.MetaTitle, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        @*Fix below field*@
+                        @*<div class="form-group">
+                                @Html.LabelFor(model => model.manufacturerModel.SeName, htmlAttributes: new { @class = "control-label col-md-3" })
+                                <div class="col-md-8">
+                                    @Html.EditorFor(model => model.manufacturerModel.SeName, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.manufacturerModel.SeName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>*@
+
+                    </div> @*End of -- <div class="tab-pane fade" id="tabSEO">*@
+
+                    <div class="tab-pane fade" id="tabProducts">
+                        <h4>In progress...</h4>
+                    </div>
+
+                </div> @*End of -- <div id="myTabContent" class="tab-content">*@
+
+            </fieldset>
+        </div>
+    }  @* End of --  @using (Html.BeginForm("*@
+
+</div>
+
+<script type="text/javascript">
+
+    //--Below script stop form submitting on Enterkey press, still allow enterkey in multi line text area
+    $(document).keypress(function (e) {
+        if (e.which == 13 && e.target.tagName != 'TEXTAREA') {
+            return false;
+        }
+    });
+    //-------
+
+    $(document).ready(function () {
+
+        $('#@Html.IdFor(model => model.manufacturerModel.AllowCustomersToSelectPageSize)').click(toggleAllowCustomersToSelectPageSize);
+        toggleAllowCustomersToSelectPageSize();
+    });
+
+    function toggleAllowCustomersToSelectPageSize()
+    {
+        if ($('#@Html.IdFor(model => model.manufacturerModel.AllowCustomersToSelectPageSize)').is(':checked'))
+        {
+            //alert('True');
+            $("#divPageSizeOptions").show();
+            $("#divPageSize").hide();
+        }
+        else {
+            //alert('False');
+            $("#divPageSizeOptions").hide();
+            $("#divPageSize").show();
+        }
+
+    }// End of -- function toggleAllowCustomersToSelectPageSize()
+
+</script>

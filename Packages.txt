@@ -1,0 +1,22 @@
+==============To create/enable bundling=================
+
+Install-Package Microsoft.AspNet.Web.Optimization
+http://www.techjunkieblog.com/2015/05/aspnet-mvc-empty-project-adding.html
+
+==============for DateTime Picker=================
+LESS : Install-Package Bootstrap.v3.Datetimepicker
+CSS: Install-Package Bootstrap.v3.Datetimepicker.CSS
+http://eonasdan.github.io/bootstrap-datetimepicker/Installing/#installation-guides
+
+==============JSON framework for .NET=================
+install-package Newtonsoft.Json
+---Removed 'Newtonsoft.Json.5.0.4' 
+---and Installed 'Newtonsoft.Json 10.0.3'
+---to fix Bundling issue i.e. "@Styles" and "@Scripts" not in current context.
+
+=============jquery=================================
+jQuery.Validation
+jquery.validate.unobtrusive
+-----------------------------------------
+--------------For jQuery dataTable----------
+jquery.datatables -version:1.10.11
