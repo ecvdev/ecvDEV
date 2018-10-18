@@ -3,9 +3,7 @@ using ecvAdminUI.Models.Vendors;
 using ecvAdminUI.ViewModels.Vendors;
 using ecvLib.Core;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using static ecvLib.Core.ecvOperationStatus.ecvOperationStatus;
 
@@ -22,7 +20,6 @@ namespace ecvAdminUI.Controllers
         }
 
         // GET: Vendor
-
         public ActionResult List()
         {
             return View();
@@ -141,7 +138,7 @@ namespace ecvAdminUI.Controllers
                     }
                     else // else only single error
                     {
-                        ModelState.AddModelError("", vendorViewModel.OperationMessage);
+                        ModelState.AddModelError(string.Empty, vendorViewModel.OperationMessage);
                     }
 
                     return View("VendorForm", vendorViewModel);

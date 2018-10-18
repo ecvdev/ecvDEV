@@ -1,6 +1,9 @@
 ﻿using System;
 using ecvLibDAL.ecvRepositories.Catalog;
 using ecvLibDAL.ecvRepositories.Vendors;
+using ecvLib.Core.ecvDomain.Vendors;
+using ecvLibDAL.ecvRepositories;
+using ecvLib.Core.ecvDomain.Catalog;
 
 namespace ecvLibDAL.ecvUnitOfWork
 {
@@ -17,6 +20,23 @@ namespace ecvLibDAL.ecvUnitOfWork
             productTypeRepository = new ProductTypeRepository(_context);
             manufacturerRepository = new ManufacturerRepository(_context);
             vendorRepository = new VendorRepository(_context);
+        }
+
+        public IRepository<TEntity> getRepository<TEntity>() 
+        {
+            if (typeof(TEntity) == typeof(Category))
+            {
+                return (IRepository<TEntity>)categoryRepository;
+            }
+            if (typeof(TEntity) == typeof(Vendor))
+            {
+                return (IRepository<TEntity>)vendorRepository;
+            }
+            if (typeof(TEntity) == typeof(Manufacturer))
+            {
+                return (IRepository<TEntity>)manufacturerRepository;
+            }
+            return null;
         }
 
         public ICategoryRepository categoryRepository

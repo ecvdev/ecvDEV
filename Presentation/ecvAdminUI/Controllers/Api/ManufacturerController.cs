@@ -17,7 +17,7 @@ namespace ecvAdminUI.Controllers.Api
         }
         public IEnumerable<ManufacturerListModel> GetManufacturerList()
         {
-            var query = _manufacturerModelFactory.GetAllManufacturerList(false) as IEnumerable<ManufacturerListModel>;
+            var query = _manufacturerModelFactory.GetManufacturerList(false) as IEnumerable<ManufacturerListModel>;
 
             return query;
         }

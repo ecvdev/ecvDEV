@@ -1,4 +1,5 @@
-﻿using ecvLibDAL.ecvRepositories.Catalog;
+﻿using ecvLibDAL.ecvRepositories;
+using ecvLibDAL.ecvRepositories.Catalog;
 using ecvLibDAL.ecvRepositories.Vendors;
 using System;
 
@@ -14,5 +15,8 @@ namespace ecvLibDAL.ecvUnitOfWork
         IManufacturerRepository manufacturerRepository { get; }
         IVendorRepository vendorRepository { get; }
         int Complete();
+
+        IRepository<TEntity> getRepository<TEntity>();
+        
     }
 }

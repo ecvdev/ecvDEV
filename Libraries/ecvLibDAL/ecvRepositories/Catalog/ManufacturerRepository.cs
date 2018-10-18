@@ -26,7 +26,8 @@ namespace ecvLibDAL.ecvRepositories.Catalog
                 .ToList();
         }
 
-        public string RemoveManufacturer(int manufacturerId)
+       
+        public string markAsDeleted(int manufacturerId)
         {
             var _manufacturer = base.Get(manufacturerId);
 

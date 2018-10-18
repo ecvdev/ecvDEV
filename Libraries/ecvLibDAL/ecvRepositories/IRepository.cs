@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace ecvLibDAL.ecvRepositories
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity>
     {
         TEntity Get(int id);
         IEnumerable<TEntity> GetAll();

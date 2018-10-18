@@ -16,7 +16,7 @@ namespace ecvLibDAL.ecvRepositories.Catalog
         IList<Manufacturer> GetAllManufacturers(string manufacturerName = "", int storeId = 0,
             int pageIndex = 1, int pageSize = int.MaxValue, bool showHidden = false);
 
+        string markAsDeleted(int manufacturerId);
 
-        string RemoveManufacturer(int manufacturerId);
     }
 }

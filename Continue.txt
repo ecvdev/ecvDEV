@@ -1,11 +1,5 @@
-1. Review CategoryService and CategoryModelFactory
-2. Category cannot be assigned itself as a parent category.
-	a. Either setup BVRule or handle in GetVM in factory.
-Note : Add operation type feature in BAVRules in Service area.
-
-Category Controller Line 185 ecvRuleViolation is null, when returning from CategoryMode;Factory it looses value!
-object "ecvOperationStatus" has value but "ecvRuleViolation" is null when category hierarchy is invalid add element in to it!
-
-3. Review CategoryService and CategoryModelFactory
-
-4. Perform unit testing on Category 
+1. Test SaveEdit in Manufacturer controller
+2. Implement "SaveEntity()" Method in ecvService.cs
+3. Test Generic service for Manufacturer
+4. Drop idea of creating generic service for Entity.
+5. Create service for Manufacturer.

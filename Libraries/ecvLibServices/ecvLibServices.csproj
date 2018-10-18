@@ -48,8 +48,11 @@
     <Compile Include="ecvServices\Catalog\IProductService.cs" />
     <Compile Include="ecvServices\Catalog\IProductTypeService.cs" />
     <Compile Include="ecvServices\Catalog\ManufacturerService.cs" />
+    <Compile Include="ecvServices\Catalog\MnfService.cs" />
     <Compile Include="ecvServices\Catalog\ProductService.cs" />
     <Compile Include="ecvServices\Catalog\ProductTypeService.cs" />
+    <Compile Include="ecvServices\ecvService.cs" />
+    <Compile Include="ecvServices\IService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ecvBAVRules\Vendors\VendorBAVRules.cs" />
     <Compile Include="ecvServices\Vendors\IVendorService.cs" />
